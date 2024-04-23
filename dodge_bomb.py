@@ -62,7 +62,7 @@ def main():
             if event.type == pg.QUIT: 
                 return
         if kk_rct.colliderect(bd_rct):
-            print("Game Over")
+            game_over(screen)
             return
         screen.blit(bg_img, [0, 0]) 
 
@@ -90,7 +90,7 @@ def main():
         clock.tick(50)
 
 
-def game_over(screen):
+def game_over(screen):  #ゲームオーバー表示画面
     fo = pg.font.Font(None, 80)
     te = fo.render("Game Over", True, (255, 255, 255))
     rc = pg.Surface((WIDTH, HEIGHT))
