@@ -1,6 +1,7 @@
 import os
 import random
 import sys
+import time
 import pygame as pg
 
 
@@ -11,6 +12,7 @@ dic_mv = { #移動量についての辞書
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0),
 }
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -32,15 +34,24 @@ def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     #ここからこうかとんの設定
-    bg_img = pg.image.load("fig/pg_bg.jpg")    
+    bg_img = pg.image.load("fig/pg_bg.jpg")                                                                 
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
     #ここから爆弾の設定
-    bd_img = pg.Surface((20, 20))
-    bd_img.set_colorkey((0, 0, 0))
-    pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)
-    bd_rct = bd_img.get_rect()
+
+    """
+    追加機能２
+    10段階で大きさを変えるための関数を用いた
+    """
+    for r in range(1, 11):
+        bb_img = pg.Surface((20*r, 20*r))
+        bb_img.set_colorkey((0, 0, 0))
+        pg.draw.circle(bb_img, (255, 0, 0), (10*r, 10*r), 10*r)
+    #bd_img = pg.Surface((20, 20))
+    #bd_img.set_colorkey((0, 0, 0))
+    #pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)
+    bd_rct = bb_img.get_rect()
     bd_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     vx, vy = +5, +5 #横方向速度,縦方向速度
 
@@ -66,9 +77,9 @@ def main():
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
         screen.blit(kk_img, kk_rct)
-        #爆弾の移動と表示1
+        #爆弾の移動と表示
         bd_rct.move_ip(vx, vy)
-        screen.blit(bd_img, bd_rct)
+        screen.blit(bb_img, bd_rct)
         yoko, tate = check_bound(bd_rct)
         if not yoko:
             vx *= -1
@@ -78,6 +89,20 @@ def main():
         tmr += 1
         clock.tick(50)
 
+
+def game_over(screen):
+    fo = pg.font.Font(None, 80)
+    te = fo.render("Game Over", True, (255, 255, 255))
+    rc = pg.Surface((WIDTH, HEIGHT))
+    rc.set_alpha(150)
+    kk_img2 = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
+    kk_img3 = pg.transform.rotozoom(pg.image.load("fig/8.png"), 0, 2.0)
+    screen.blit(rc, [0,0])
+    screen.blit(te, [640, 410])
+    screen.blit(kk_img2, [1000, 350])
+    screen.blit(kk_img3, [500, 350])
+    pg.display.update()
+    time.sleep(5) 
 
 if __name__ == "__main__":
     pg.init()
