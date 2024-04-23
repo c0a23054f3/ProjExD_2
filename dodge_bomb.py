@@ -12,6 +12,16 @@ dic_mv = { #移動量についての辞書
     pg.K_LEFT: (-5, 0),
     pg.K_RIGHT: (+5, 0),
 }
+"""
+追加課題1の角度を変えるための値
+"""
+dic_angle_mv = {
+    pg.K_UPRIGHT: (5, -5, 45),
+    pg.K_UPLEFT: (-5, -5, 135),
+    pg.K_DOWNRIGHT: (5, 5, 315),
+    pg.K_DOWNLEFT: (-5, 5, 225)
+}
+
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -90,7 +100,7 @@ def main():
         clock.tick(50)
 
 
-def game_over(screen):  #ゲームオーバー表示画面
+def game_over(screen):  #追加課題４：ゲームオーバー表示画面
     fo = pg.font.Font(None, 80)
     te = fo.render("Game Over", True, (255, 255, 255))
     rc = pg.Surface((WIDTH, HEIGHT))
